@@ -1,4 +1,4 @@
-package com.main.androiddemo.adapter;
+package com.main.androiddemo.utils;
 
 import android.util.SparseArray;
 import android.view.View;
