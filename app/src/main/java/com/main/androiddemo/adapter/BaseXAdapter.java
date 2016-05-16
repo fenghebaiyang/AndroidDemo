@@ -1,20 +1,31 @@
 package com.main.androiddemo.adapter;
 
 import android.content.Context;
+import android.util.SparseArray;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 
-/**
- * Created by justme on 16/1/23.
- */
 public abstract class BaseXAdapter<T> extends BaseAdapter {
-    private Context mContext;
-    private ArrayList<T> list;
+    /**
+     * 上下文
+     */
+    public Context mContext;
+    /**
+     * 数据集合
+     */
+    public ArrayList<T> list;
 
     public BaseXAdapter(Context mContext) {
         this.mContext = mContext;
-        this.list = new ArrayList<T>();
+        list = new ArrayList<T>();
+    }
+
+    public BaseXAdapter(Context mContext, ArrayList<T> list) {
+        this.mContext = mContext;
+        this.list = list;
     }
 
     @Override
@@ -32,24 +43,55 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
         return position;
     }
 
-    public ArrayList<T> getList() {
-        return list;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = View.inflate(mContext, getConvertViewRes(position, getItemViewType(position)), null);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        return getItemView(position, convertView, parent, viewHolder);
     }
 
-    public void deleteAll() {
-        if (list != null) {
-            list.clear();
-            notifyDataSetChanged();
+
+    public abstract int getConvertViewRes(int position, int type);
+
+    public abstract View getItemView(int position, View convertView, ViewGroup parent, ViewHolder viewHolder);
+
+    public class ViewHolder {
+
+        private SparseArray<View> views = new SparseArray<View>();
+        private View convertView;
+
+        public ViewHolder(View convertView) {
+            this.convertView = convertView;
+        }
+
+        @SuppressWarnings({"unchecked", "hiding"})
+        public <T extends View> T getView(int resId) {
+            View v = views.get(resId);
+            if (null == v) {
+                v = convertView.findViewById(resId);
+                views.put(resId, v);
+            }
+            return (T) v;
         }
     }
 
-    public void deleteItem(int position) {
-        if (list != null && position >= 0 && position < list.size()) {
-            list.remove(position);
-            notifyDataSetChanged();
-        }
-    }
-
+    /**
+     * <p>   适配器列表添加数据，并刷新
+     * <br/> @version 1.0
+     * <br/> @createTime 2015/11/20 15:46
+     * <br/> @updateTime 2015/11/20 15:46
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @param temp list
+     */
     public void addAll(ArrayList<T> temp) {
         if (temp == null) {
             return;
@@ -62,20 +104,58 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * <p/>  添加单个Item
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/1/11 18:03
+     * <br/> @updateTime 2016/1/11 18:03
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @param temp 对象
+     */
     public void addItem(T temp) {
-        if (list != null) {
-            addItem(temp, list.size());
-        }
-    }
-
-    public void addItem(T temp, int index) {
         if (temp == null) {
             return;
         }
-        if (list != null) {
-            list.add(index, temp);
-            notifyDataSetChanged();
+        if (list == null) {
+            list = new ArrayList<T>();
         }
+        list.add(temp);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 清除所有数据，刷新界面
+     * <p/>
+     * <br/> @version 1.0
+     * <br/> @createTime 2015/11/20 15:46
+     * <br/> @updateTime 2015/11/20 15:46
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     */
+    public void deleteAll() {
+        if (list != null) {
+            list.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * <p/>  返回list对象
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/1/13 13:46
+     * <br/> @updateTime 2016/1/13 13:46
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @return list
+     */
+    public ArrayList<T> getList() {
+        return list;
     }
 
 }
