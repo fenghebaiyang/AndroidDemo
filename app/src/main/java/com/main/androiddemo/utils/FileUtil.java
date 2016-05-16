@@ -15,7 +15,7 @@ import android.provider.MediaStore;
  * @Author xiaojianfeng
  * @Date 16/4/6 上午12:08
  */
-public class FileUtils {
+public class FileUtil {
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and

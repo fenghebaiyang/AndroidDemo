@@ -2,6 +2,7 @@ package com.main.androiddemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,19 +10,14 @@ import android.widget.LinearLayout;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.NetworkImageView;
 import com.bumptech.glide.Glide;
 import com.main.androiddemo.api.GsonGetRequest;
 import com.main.androiddemo.api.ManagerRequest;
 import com.main.androiddemo.bean.HuaBanBean;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.main.androiddemo.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -31,47 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
     private LinearLayout testLayout;
-
-    public static Map<String, Object> jsonToMap(JSONObject json) throws JSONException {
-        Map<String, Object> retMap = new HashMap<String, Object>();
-
-        if (json != JSONObject.NULL) {
-            retMap = toMap(json);
-        }
-        return retMap;
-    }
-
-    public static Map<String, Object> toMap(JSONObject object) throws JSONException {
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        Iterator<String> keysItr = object.keys();
-        while (keysItr.hasNext()) {
-            String key = keysItr.next();
-            Object value = object.get(key);
-
-            if (value instanceof JSONArray) {
-                value = toList((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = toMap((JSONObject) value);
-            }
-            map.put(key, value);
-        }
-        return map;
-    }
-
-    public static List<Object> toList(JSONArray array) throws JSONException {
-        List<Object> list = new ArrayList<Object>();
-        for (int i = 0; i < array.length(); i++) {
-            Object value = array.get(i);
-            if (value instanceof JSONArray) {
-                value = toList((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = toMap((JSONObject) value);
-            }
-            list.add(value);
-        }
-        return list;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 ((WindowManager) getSystemService(WINDOW_SERVICE)).addView(new View(MainActivity.this), layoutParams);*/
             }
         });
+        Log.d(TAG, "onCreate: http://huaban.com/partner/uc/aimeinv/pins/");
+        Logger.d(TAG, "onCreate: http://huaban.com/partner/uc/aimeinv/pins/");
 
         GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>("http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class, new Response.Listener<HuaBanBean>() {
             @Override

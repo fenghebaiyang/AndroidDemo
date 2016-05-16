@@ -10,9 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by JustMe on 15/12/27.
- */
 public class Logger {
 
     private static String TAG = "Logger";
@@ -51,8 +48,29 @@ public class Logger {
         }
     }
 
+    private static final int CHUNK_SIZE = 4000;
+
+    /**
+     * <p/>  调用系统日志打印内容
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/5/16 0016 15:55
+     * <br/> @updateTime 2016/5/16 0016 15:55
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @param tag tag
+     * @param msg 内容
+     */
     private static void log(String tag, String msg) {
-        Log.d(TextUtils.isEmpty(tag) ? TAG : tag, msg);
+        if (msg.length() <= CHUNK_SIZE) {
+            Log.d(TextUtils.isEmpty(tag.trim()) ? TAG : tag, msg);
+        } else {
+            for (int i = 0; i < msg.length(); i += CHUNK_SIZE) {
+                int count = Math.min(msg.length() - i, CHUNK_SIZE);
+                Log.d(TextUtils.isEmpty(tag.trim()) ? TAG : tag, msg.substring(i, i + count));
+            }
+        }
     }
 
     private static String getSplitter(int length) {

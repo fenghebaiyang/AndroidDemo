@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.main.androiddemo.utils.Logger;
 
 import java.io.UnsupportedEncodingException;
 
@@ -34,6 +35,7 @@ public class GsonGetRequest<T> extends Request<T> {
         try {
             String json = new String(
                     response.data, HttpHeaderParser.parseCharset(response.headers));
+            Logger.dd("response",json);
             return Response.success(
                     gson.fromJson(json, mClazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
