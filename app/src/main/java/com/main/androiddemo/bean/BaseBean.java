@@ -7,7 +7,7 @@ package com.main.androiddemo.bean;
  */
 public class BaseBean {
 
-    private int status;
-    private String message;
+    public int status;
+    public String message;
 
 }

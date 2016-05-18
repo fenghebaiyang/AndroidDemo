@@ -62,4 +62,34 @@ public class DensityUtil {
         return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
     }
 
+
+    /**
+     * <p/>  获取屏幕宽度
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/5/17 0017 11:48
+     * <br/> @updateTime 2016/5/17 0017 11:48
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     * @param context
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    /**
+     * <p/>  获取屏幕高度
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/5/17 0017 11:49
+     * <br/> @updateTime 2016/5/17 0017 11:49
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     * @param context
+     * @return
+     */
+    public static int getScreenHight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
 }
