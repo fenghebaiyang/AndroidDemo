@@ -41,7 +41,5 @@ public class GsonGetRequest<T> extends Request<T> {
         } catch (JsonSyntaxException e) {
             return Response.error(new ParseError(e));
         }
-
-
     }
 }
