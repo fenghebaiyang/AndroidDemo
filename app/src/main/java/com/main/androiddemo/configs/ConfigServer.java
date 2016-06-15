@@ -32,4 +32,11 @@ public class ConfigServer {
      * Api服务器地址
      */
     public final static String SERVER_API_URL = "http://api.goodiver.com/router/rest";
+
+    /**
+     * Api服务器地址
+     */
+    public final static String DEMO_URL = "http://huaban.com/partner/uc/aimeinv/pins/";
+
+
 }

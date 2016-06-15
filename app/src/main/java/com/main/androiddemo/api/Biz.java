@@ -1,8 +1,14 @@
 package com.main.androiddemo.api;
 
+import android.content.Context;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.configs.ConfigServer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <br/> Description:所有的网络请求
@@ -22,5 +28,21 @@ public class Biz {
         return map;
     }
 
+    public static void getDemo(Context mContext, final Response.ErrorListener errorListener, final Response.Listener<HuaBanBean> listener) {
+        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>(mContext, false, "http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class,
+                listener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> head = new HashMap<String, String>();
+                head.put("X-Requested-With", "XMLHttpRequest");
+                return head;
+            }
+        };
+        stringRe.start();
+    }
+
+    public static <T> void GsonGet(Context mContext, final Response.ErrorListener errorListener, final Response.Listener<T> listener) {
+
+    }
 
 }

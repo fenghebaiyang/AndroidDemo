@@ -7,19 +7,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
-import com.main.androiddemo.api.GsonGetRequest;
-import com.main.androiddemo.api.ManagerRequest;
+import com.main.androiddemo.api.Biz;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,16 +50,34 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: http://huaban.com/partner/uc/aimeinv/pins/");
         Logger.d(TAG, "onCreate: http://huaban.com/partner/uc/aimeinv/pins/");
 
-        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>("http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class, new Response.Listener<HuaBanBean>() {
+        Biz.getDemo(MainActivity.this, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, new Response.Listener<HuaBanBean>() {
             @Override
             public void onResponse(HuaBanBean response) {
                 HuaBanBean bean = response;
                 List<HuaBanBean.PinsEntity> pins = bean.getPins();
                 for (int i = 0; i < pins.size(); i++) {
                     ImageView imageView = new ImageView(MainActivity.this);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                    testLayout.addView(imageView,layoutParams);
-                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/"+ pins.get(i).getFile().getKey()).into(imageView);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    testLayout.addView(imageView, layoutParams);
+                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey()).into(imageView);
+                }
+            }
+        });
+        /*GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>("http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class, new Response.Listener<HuaBanBean>() {
+            @Override
+            public void onResponse(HuaBanBean response) {
+                HuaBanBean bean = response;
+                List<HuaBanBean.PinsEntity> pins = bean.getPins();
+                for (int i = 0; i < pins.size(); i++) {
+                    ImageView imageView = new ImageView(MainActivity.this);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    testLayout.addView(imageView, layoutParams);
+                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey()).into(imageView);
                 }
             }
         }, new Response.ErrorListener() {
@@ -79,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 return head;
             }
         };
-        ManagerRequest.getVolleyRequestQueue(MainActivity.this).add(stringRe);
+        ManagerRequest.getVolleyRequestQueue(MainActivity.this).add(stringRe);*/
 
     }
 
