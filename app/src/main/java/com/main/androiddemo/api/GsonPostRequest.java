@@ -12,6 +12,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.main.androiddemo.utils.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -34,6 +35,8 @@ public class GsonPostRequest<T> extends JsonRequest<T> {
             (Context mContext, boolean cancelAble, String url, Map<String, String> params, Class<T> mClazz,
              Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(Method.POST, url, HttpHeaderParser.parseCharset(params), listener, errorListener);
+        Logger.dd("url", url);
+        Logger.dd("params", params);
         gson = new Gson();
         this.mClazz = mClazz;
         this.listener = listener;
@@ -65,6 +68,7 @@ public class GsonPostRequest<T> extends JsonRequest<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            Logger.dd("result", json);
             return Response.success(gson.fromJson(json, mClazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
