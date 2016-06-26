@@ -2,6 +2,7 @@ package com.main.androiddemo.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 
 /**
  * <br/> Description:加载对话框
@@ -10,21 +11,21 @@ import android.content.Context;
  * <br/> Date: 2016/6/15 0015
  * <br/> @Copyright: Copyright (c) 2016 Shenzhen Duidian Technology Co., Ltd. All rights reserved.
  */
-public class LoadIngDialog extends Dialog {
+public class LoadingDialog extends AlertDialog {
 
     private Context mContext;
 
-    public LoadIngDialog(Context context) {
+    public LoadingDialog(Context context) {
         super(context);
         init();
     }
 
-    public LoadIngDialog(Context context, int themeResId) {
+    public LoadingDialog(Context context, int themeResId) {
         super(context, themeResId);
         init();
     }
 
-    protected LoadIngDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected LoadingDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         init();
     }

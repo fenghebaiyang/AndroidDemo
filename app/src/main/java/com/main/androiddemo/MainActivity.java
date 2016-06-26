@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.main.androiddemo.api.Biz;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
+import com.main.androiddemo.widget.GridImagesDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,24 @@ import java.util.regex.Pattern;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
+    private GridImagesDisplay dis_1;
+    private GridImagesDisplay dis_2;
+    private GridImagesDisplay dis_3;
+    private GridImagesDisplay dis_4;
+    private GridImagesDisplay dis_5;
     private LinearLayout testLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dis_1 = (GridImagesDisplay) findViewById(R.id.dis_1);
+        dis_2 = (GridImagesDisplay) findViewById(R.id.dis_2);
+        dis_3 = (GridImagesDisplay) findViewById(R.id.dis_3);
+        dis_4 = (GridImagesDisplay) findViewById(R.id.dis_4);
+        dis_5 = (GridImagesDisplay) findViewById(R.id.dis_5);
+
         testLayout = (LinearLayout) findViewById(R.id.test_layout);
 
 
@@ -60,12 +73,20 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(HuaBanBean response) {
                 HuaBanBean bean = response;
                 List<HuaBanBean.PinsEntity> pins = bean.getPins();
+                ArrayList<String> urls = new ArrayList<String>();
                 for (int i = 0; i < pins.size(); i++) {
-                    ImageView imageView = new ImageView(MainActivity.this);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    testLayout.addView(imageView, layoutParams);
-                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey()).into(imageView);
+                    urls.add("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey());
+//                    ImageView imageView = new ImageView(MainActivity.this);
+//                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//                    testLayout.addView(imageView, layoutParams);
+//                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey()).into(imageView);
                 }
+
+                dis_1.setImageList(new ArrayList<String>(urls.subList(0, 1)));
+                dis_2.setImageList(new ArrayList<String>(urls.subList(0, 2)));
+                dis_3.setImageList(new ArrayList<String>(urls.subList(0, 3)));
+                dis_4.setImageList(new ArrayList<String>(urls.subList(0, 4)));
+                dis_5.setImageList(urls);
             }
         });
         /*GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>("http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class, new Response.Listener<HuaBanBean>() {

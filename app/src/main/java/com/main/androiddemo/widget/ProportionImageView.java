@@ -83,4 +83,8 @@ public class ProportionImageView extends ImageView {
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+    public void setProportion(float proportion) {
+        this.proportion = proportion;
+    }
 }
