@@ -1,6 +1,5 @@
 package com.main.androiddemo.widget;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
