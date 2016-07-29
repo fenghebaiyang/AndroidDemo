@@ -28,8 +28,13 @@ public class Biz {
         return map;
     }
 
-    public static void getDemo(Context mContext, final Response.ErrorListener errorListener, final Response.Listener<HuaBanBean> listener) {
-        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>(mContext, false, "http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class,
+    public static void getDemo(Context mContext, int maxPin, final Response.ErrorListener errorListener, final Response.Listener<HuaBanBean> listener) {
+        String url = "http://huaban.com/partner/uc/aimeinv/pins/";
+        if (maxPin > 0) {
+            //加载更多
+            url += "?max=" + maxPin;
+        }
+        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>(mContext, false, url, HuaBanBean.class,
                 listener, errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

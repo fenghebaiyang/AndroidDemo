@@ -1,22 +1,16 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@+id/load_more_list_container"
+        app:layout_heightPercent="100%"
+        app:layout_widthPercent="40%">
 
         <LinearLayout
             android:id="@+id/test_layout"
@@ -51,4 +45,24 @@
         </LinearLayout>
 
     </ScrollView>
-</RelativeLayout>
+
+    <com.main.androiddemo.widget.loadmore.LoadMoreListViewContainer
+        android:id="@+id/load_more_list_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_heightPercent="100%"
+        app:layout_widthPercent="60%">
+
+        <ListView
+            android:id="@+id/load_more_small_image_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:scrollbarStyle="outsideOverlay" />
+
+    </com.main.androiddemo.widget.loadmore.LoadMoreListViewContainer>
+</android.support.percent.PercentRelativeLayout>
