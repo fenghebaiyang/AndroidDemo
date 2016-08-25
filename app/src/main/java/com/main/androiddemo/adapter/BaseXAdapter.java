@@ -2,11 +2,13 @@ package com.main.androiddemo.adapter;
 
 import android.content.Context;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseXAdapter<T> extends BaseAdapter {
     /**
@@ -16,7 +18,7 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
     /**
      * 数据集合
      */
-    public ArrayList<T> list;
+    protected List<T> list;
 
     public BaseXAdapter(Context mContext) {
         this.mContext = mContext;
@@ -47,7 +49,7 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, getConvertViewRes(position, getItemViewType(position)), null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(getConvertViewRes(position, getItemViewType(position)),parent,false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -61,26 +63,6 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
 
     public abstract View getItemView(int position, View convertView, ViewGroup parent, ViewHolder viewHolder);
 
-    public class ViewHolder {
-
-        private SparseArray<View> views = new SparseArray<View>();
-        private View convertView;
-
-        public ViewHolder(View convertView) {
-            this.convertView = convertView;
-        }
-
-        @SuppressWarnings({"unchecked", "hiding"})
-        public <T extends View> T getView(int resId) {
-            View v = views.get(resId);
-            if (null == v) {
-                v = convertView.findViewById(resId);
-                views.put(resId, v);
-            }
-            return (T) v;
-        }
-    }
-
     /**
      * <p>   适配器列表添加数据，并刷新
      * <br/> @version 1.0
@@ -92,7 +74,7 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
      *
      * @param temp list
      */
-    public void addAll(ArrayList<T> temp) {
+    public void addAll(List<T> temp) {
         if (temp == null) {
             return;
         }
@@ -154,8 +136,28 @@ public abstract class BaseXAdapter<T> extends BaseAdapter {
      *
      * @return list
      */
-    public ArrayList<T> getList() {
+    public List<T> getList() {
         return list;
+    }
+
+    public class ViewHolder {
+
+        private SparseArray<View> views = new SparseArray<View>();
+        private View convertView;
+
+        public ViewHolder(View convertView) {
+            this.convertView = convertView;
+        }
+
+        @SuppressWarnings({"unchecked", "hiding"})
+        public <T extends View> T getView(int resId) {
+            View v = views.get(resId);
+            if (null == v) {
+                v = convertView.findViewById(resId);
+                views.put(resId, v);
+            }
+            return (T) v;
+        }
     }
 
 }

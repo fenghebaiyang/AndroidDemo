@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.google.gson.reflect.TypeToken;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.configs.ConfigServer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +49,7 @@ public class Biz {
     }
 
     public static <T> void GsonGet(Context mContext, final Response.ErrorListener errorListener, final Response.Listener<T> listener) {
-
+        //GsonGetRequest<T> gsonGetRequest = new GsonGetRequest<T>(mContext,Class.forName(T),errorListener,listener);
     }
 
 }
