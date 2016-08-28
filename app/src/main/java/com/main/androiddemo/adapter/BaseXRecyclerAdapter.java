@@ -16,7 +16,7 @@ import java.util.List;
  * <br/> Version: 1.0
  * <br/> Date: 2016/8/25 0025
  */
-public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXRecyclerAdapter.ViewHolder> {
+public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXRecyclerAdapter.BaseXViewHolder> {
 
     protected Context mContext;
     /**
@@ -35,9 +35,14 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseXViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(getConvertViewRes(viewType), parent, false);
-        return new ViewHolder(itemView);
+        return new BaseXViewHolder(itemClickListener, itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(BaseXViewHolder holder, int position) {
+        getItemView(holder, position);
     }
 
     @Override
@@ -46,6 +51,8 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
     }
 
     public abstract int getConvertViewRes(int viewType);
+
+    public abstract void getItemView(BaseXViewHolder holder, int position);
 
     /**
      * <p>   适配器列表添加数据，并刷新
@@ -86,6 +93,18 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
         this.addItem(temp, getItemCount());
     }
 
+    /**
+     * <p/>  加入某条数据
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/8/26 0026 9:20
+     * <br/> @updateTime 2016/8/26 0026 9:20
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @param temp
+     * @param position
+     */
     public void addItem(T temp, int position) {
         if (temp == null) {
             return;
@@ -154,14 +173,17 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
         return list;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class BaseXViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private SparseArray<View> views = new SparseArray<View>();
-        private View itemView;
+        private RecyclerItemClickListener itemClickListener;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            this.itemView = itemView;
+        public BaseXViewHolder(RecyclerItemClickListener itemClickListener, View view) {
+            super(view);
+            if (itemClickListener != null) {
+                itemView.setOnClickListener(this);
+            }
+            this.itemClickListener = itemClickListener;
         }
 
         @SuppressWarnings({"unchecked", "hiding"})
@@ -173,5 +195,51 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
             }
             return (T) v;
         }
+
+        @Override
+        public void onClick(View v) {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClickListener(v, getAdapterPosition());
+            }
+        }
+    }
+
+    public interface RecyclerItemClickListener {
+        void onItemClickListener(View v, int position);
+    }
+
+    /**
+     * item点击事件
+     */
+    private RecyclerItemClickListener itemClickListener;
+
+    /**
+     * <p/>  item的点击事件
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/1/4 10:54
+     * <br/> @updateTime 2016/1/4 10:54
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @return 单个点击事件
+     */
+    public RecyclerItemClickListener getItemClickListener() {
+        return itemClickListener;
+    }
+
+    /**
+     * <p/>  设置点击事件
+     * <br/> @version 1.0
+     * <br/> @createTime 2016/1/4 10:53
+     * <br/> @updateTime 2016/1/4 10:53
+     * <br/> @createAuthor xiaojianfeng
+     * <br/> @updateAuthor xiaojianfeng
+     * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
+     *
+     * @param itemClickListener Recycler的单个Item的点击事件
+     */
+    public void setItemClickListener(RecyclerItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 }

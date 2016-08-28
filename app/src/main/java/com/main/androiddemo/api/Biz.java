@@ -4,11 +4,9 @@ import android.content.Context;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
-import com.google.gson.reflect.TypeToken;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.configs.ConfigServer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +34,7 @@ public class Biz {
             //加载更多
             url += "?max=" + maxPin;
         }
-        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>(mContext, false, url, HuaBanBean.class,
+        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>(mContext, false, url,
                 listener, errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

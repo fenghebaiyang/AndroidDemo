@@ -13,34 +13,31 @@ import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.main.androiddemo.utils.Logger;
+import com.main.androiddemo.utils.ReflectUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class GsonPostRequest<T> extends JsonRequest<T> {
-    private Gson gson;
-    private Response.Listener<T> listener;
-    private Class<T> mClazz;
 
+    private Response.Listener<T> listener;
     private Context mContext;
     private ProgressDialog dialog;
 
     public GsonPostRequest
-            (String url, Map<String, String> params, Class<T> mClazz,
+            (String url, Map<String, String> params,
              Response.Listener<T> listener, Response.ErrorListener errorListener) {
-        this(null, false, url, params, mClazz, listener, errorListener);
+        this(null, false, url, params, listener, errorListener);
     }
 
     public GsonPostRequest
-            (Context mContext, boolean cancelAble, String url, Map<String, String> params, Class<T> mClazz,
+            (Context mContext, boolean cancelAble, String url, Map<String, String> params,
              Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(Method.POST, url, HttpHeaderParser.parseCharset(params), listener, errorListener);
         Logger.dd("url", url);
         Logger.dd("params", params);
-        gson = new Gson();
-        this.mClazz = mClazz;
         this.listener = listener;
-
         if (mContext != null) {
             this.mContext = mContext;
             dialog = new ProgressDialog(mContext);
@@ -69,7 +66,12 @@ public class GsonPostRequest<T> extends JsonRequest<T> {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             Logger.dd("result", json);
-            return Response.success(gson.fromJson(json, mClazz), HttpHeaderParser.parseCacheHeaders(response));
+            Class<T> clazz = null;
+            Type type = ReflectUtil.getType(getClass(), 0);
+            if (type instanceof Class) {
+                clazz = (Class<T>) type;
+            }
+            return Response.success(new Gson().fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {
