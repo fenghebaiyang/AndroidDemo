@@ -61,6 +61,7 @@ public class GsonPostRequest<T> extends JsonRequest<T> {
         listener.onResponse(response);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
