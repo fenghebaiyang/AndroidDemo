@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * <br/> Description:
+ * <br/> Description:懒加载的fragment
  * <br/> Author: xiaojianfeng
  * <br/> Version: 1.0
  * <br/> Date: 2016/5/11 0011
@@ -16,15 +16,7 @@ import android.view.ViewGroup;
  */
 public abstract class BaseLazyFragment extends Fragment {
 
-    private boolean isPrepared;
     public Context mContext;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
-
     /**
      * 无布局内容
      */
@@ -34,11 +26,50 @@ public abstract class BaseLazyFragment extends Fragment {
      */
     public View viewParent;
 
+    private boolean isPrepared = false;
+    /**
+     * 第一次onResume中的调用onUserVisible避免操作与onFirstUserVisible操作重复
+     */
+    private boolean isFirstResume = true;
+    private boolean isFirstVisible = true;
+    private boolean isFirstInvisible = true;
+    protected boolean isLoadDataCompleted = false;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (isFirstVisible) {
+                isFirstVisible = false;
+                if (isPrepared && !isLoadDataCompleted) {
+                    isLoadDataCompleted = true;
+                    init();
+                }
+            } else {
+                onUserVisible();
+            }
+        } else {
+            if (isFirstInvisible) {
+                isFirstInvisible = false;
+                onFirstUserInvisible();
+            } else {
+                onUserInvisible();
+            }
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         int layoutID = getContentViewId();
         if (NO_LAYOUT_CONTENT != layoutID) {
             viewParent = inflater.inflate(layoutID, container, false);
+            initPrepare();
             return viewParent;
         }
         return null;
@@ -47,14 +78,11 @@ public abstract class BaseLazyFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initPrepare();
+        if (getUserVisibleHint()) {
+            isLoadDataCompleted = true;
+            init();
+        }
     }
-
-
-    /**
-     * 第一次onResume中的调用onUserVisible避免操作与onFirstUserVisible操作重复
-     */
-    private boolean isFirstResume = true;
 
     @Override
     public void onResume() {
@@ -76,37 +104,18 @@ public abstract class BaseLazyFragment extends Fragment {
         }
     }
 
-    private boolean isFirstVisible = true;
-    private boolean isFirstInvisible = true;
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (isFirstVisible) {
-                isFirstVisible = false;
-                initPrepare();
-            } else {
-                onUserVisible();
-            }
-        } else {
-            if (isFirstInvisible) {
-                isFirstInvisible = false;
-                onFirstUserInvisible();
-            } else {
-                onUserInvisible();
-            }
-        }
-    }
 
     protected synchronized void initPrepare() {
-        if (isPrepared) {
+        if (!isPrepared) {
             onFirstUserVisible();
-        } else {
             isPrepared = true;
         }
     }
 
+    /**
+     * 获取上一个界面传送过来的数据
+     */
+    protected abstract void initGetData();
     /**
      * @return 获取layoutID
      */
@@ -131,15 +140,17 @@ public abstract class BaseLazyFragment extends Fragment {
      * 第一次fragment可见（进行初始化工作）
      */
     public void onFirstUserVisible() {
+        initGetData();
         findViews();
         widgetListener();
-        init();
     }
 
     /**
      * fragment可见（切换回来或者onResume）
      */
-    public abstract void onUserVisible();
+    public void onUserVisible() {
+
+    }
 
     /**
      * 第一次fragment不可见（不建议在此处理事件）
@@ -154,4 +165,5 @@ public abstract class BaseLazyFragment extends Fragment {
     public void onUserInvisible() {
 
     }
+
 }

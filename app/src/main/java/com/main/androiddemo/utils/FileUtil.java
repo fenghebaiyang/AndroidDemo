@@ -12,7 +12,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.main.androiddemo.base.AppContext;
+import com.main.androiddemo.base.App;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,7 +27,7 @@ import java.io.IOException;
 public class FileUtil {
     private static final String TAG = "FileUtil";
     private static String pathDiv = "/";
-    private static File cacheDir = !isExternalStorageWritable() ? AppContext.getInstance().getFilesDir() : AppContext.getInstance().getExternalCacheDir();
+    private static File cacheDir = !isExternalStorageWritable() ? App.getInstance().getFilesDir() : App.getInstance().getExternalCacheDir();
 
     private FileUtil() {
         /* cannot be instantiated */
@@ -123,7 +123,7 @@ public class FileUtil {
      */
     public static boolean createFile(byte[] data, String fileName, String type) {
         if (isExternalStorageWritable()) {
-            File dir = AppContext.getInstance().getExternalFilesDir(type);
+            File dir = App.getInstance().getExternalFilesDir(type);
             if (dir != null) {
                 File f = new File(dir, fileName);
                 try {

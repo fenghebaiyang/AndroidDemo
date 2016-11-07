@@ -34,7 +34,7 @@ public class Biz {
             //加载更多
             url += "?max=" + maxPin;
         }
-        GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>(mContext, false, url,
+        new GsonGetRequest<HuaBanBean>(mContext, false, url,
                 listener, errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -42,8 +42,7 @@ public class Biz {
                 head.put("X-Requested-With", "XMLHttpRequest");
                 return head;
             }
-        };
-        stringRe.start();
+        }.start();
     }
 
     public static <T> void GsonGet(Context mContext, final Response.ErrorListener errorListener, final Response.Listener<T> listener) {

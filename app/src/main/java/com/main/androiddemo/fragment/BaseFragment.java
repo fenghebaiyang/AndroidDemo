@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * <br/> Description:
+ * <br/> Description:fragment基类
  * <br/> Author: xiaojianfeng
  * <br/> Version: 1.0
  * <br/> Date: 2016/6/15 0015
@@ -25,8 +25,19 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        int layoutID = getContentViewId();
+        if (NO_LAYOUT_CONTENT != layoutID) {
+            viewParent = inflater.inflate(layoutID, container, false);
+            return viewParent;
+        }
+        return null;
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initGetData();
         findViews();
         widgetListener();
         init();
@@ -41,15 +52,10 @@ public abstract class BaseFragment extends Fragment {
      */
     public View viewParent;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int layoutID = getContentViewId();
-        if (NO_LAYOUT_CONTENT != layoutID) {
-            viewParent = inflater.inflate(layoutID, container, false);
-            return viewParent;
-        }
-        return null;
-    }
+    /**
+     * 获取上一个界面传送过来的数据
+     */
+    protected abstract void initGetData();
 
     /**
      * @return 获取layoutID

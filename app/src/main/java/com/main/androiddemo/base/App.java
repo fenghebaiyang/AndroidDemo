@@ -6,11 +6,11 @@ import android.app.Application;
  * 全局应用程序类
  * Created by justme on 15/8/24.
  */
-public class AppContext extends Application {
+public class App extends Application {
 
-    private static AppContext ourInstance;
+    private static App ourInstance;
 
-    public static AppContext getInstance() {
+    public static App getInstance() {
         return ourInstance;
     }
 
