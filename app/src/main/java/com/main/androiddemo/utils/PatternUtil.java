@@ -200,11 +200,23 @@ public class PatternUtil {
             return false;
         }
         int sum = 0;
-        for (int i = bankCard.length() - 1; i >= 0; i--) {
-            if (i % 2 == 0) {
-                sum += bankCard.charAt(i) - '0';
-            } else {
-                sum += (bankCard.charAt(i) - '0') * 2 > 9 ? (bankCard.charAt(i) - '0') * 2 - 9 : (bankCard.charAt(i) - '0') * 2;
+        if (bankCard.length() % 2 == 0) {
+            for (int i = bankCard.length() - 1; i >= 0; i--) {
+                if (i % 2 == 0) {
+                    int value = (bankCard.charAt(i) - '0') * 2;
+                    sum += value > 9 ? value - 9 : value;
+                } else {
+                    sum += bankCard.charAt(i) - '0';
+                }
+            }
+        } else {
+            for (int i = bankCard.length() - 1; i >= 0; i--) {
+                if (i % 2 == 0) {
+                    sum += bankCard.charAt(i) - '0';
+                } else {
+                    int value = (bankCard.charAt(i) - '0') * 2;
+                    sum += value > 9 ? value - 9 : value;
+                }
             }
         }
         if (sum > 0 && sum % 10 == 0) {
