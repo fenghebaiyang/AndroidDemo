@@ -23,7 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         ActivityManager.getActivityManager().addActivity(this);
-
+        // TODO: 2016/12/22 0022 popManagerStack
         setContentView(getContentViewId());
         findViews();
         initGetData();
