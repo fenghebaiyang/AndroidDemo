@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.main.androiddemo"
@@ -21,14 +21,15 @@ android {
     }
 
     applicationVariants.all {
-        variant -> variant.outputs.each {
-            output ->
-                def outputFile = output.outputFile
-                if (variant.name == android.buildTypes.release.name && outputFile != null && outputFile.name.endsWith('.apk')) {
-                    def fileName = outputFile.name.replace(".apk", "-${defaultConfig.versionName}" + "-${defaultConfig.versionCode}" + "-${new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date(System.currentTimeMillis())).toString()}.apk")
-                    output.outputFile = new File(outputFile.parent, fileName)
-                }
-        }
+        variant ->
+            variant.outputs.each {
+                output ->
+                    def outputFile = output.outputFile
+                    if (variant.name == android.buildTypes.release.name && outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = outputFile.name.replace(".apk", "-${defaultConfig.versionName}" + "-${defaultConfig.versionCode}" + "-${new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date(System.currentTimeMillis())).toString()}.apk")
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+            }
     }
 }
 
