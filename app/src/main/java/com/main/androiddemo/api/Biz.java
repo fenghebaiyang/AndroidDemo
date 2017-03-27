@@ -43,7 +43,6 @@ public class Biz {
                 return head;
             }
         }.start();
-        String.format("dddd","dddd");
     }
 
     public static <T> void GsonGet(Context mContext, final Response.ErrorListener errorListener, final Response.Listener<T> listener) {

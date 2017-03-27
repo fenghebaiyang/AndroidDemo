@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.main.androiddemo.adapter.BaseXAdapter;
-import com.main.androiddemo.api.Biz;
+import com.main.androiddemo.api.GsonGetRequest;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
 import com.main.androiddemo.widget.GridImagesDisplay;
@@ -22,7 +23,9 @@ import com.main.androiddemo.widget.loadmore.LoadMoreHandler;
 import com.main.androiddemo.widget.loadmore.LoadMoreListViewContainer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -129,40 +132,88 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData(final LoadMoreListViewContainer loadMoreListViewContainer, final BaseXAdapter adapter) {
-        Biz.getDemo(MainActivity.this,maxPin, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }, new Response.Listener<HuaBanBean>() {
-            @Override
-            public void onResponse(HuaBanBean response) {
-                HuaBanBean bean = response;
-                List<HuaBanBean.PinsEntity> pins = bean.getPins();
-                ArrayList<String> urls = new ArrayList<String>();
-                for (int i = 0; i < pins.size(); i++) {
-                    urls.add("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey());
+        String url = "http://huaban.com/partner/uc/aimeinv/pins/";
+        if (maxPin > 0) {
+            //加载更多
+            url += "?max=" + maxPin;
+        }
+        new GsonGetRequest<HuaBanBean>(MainActivity.this, false, url,
+                new Response.Listener<HuaBanBean>() {
+                    @Override
+                    public void onResponse(HuaBanBean response) {
+                        HuaBanBean bean = response;
+                        List<HuaBanBean.PinsEntity> pins = bean.getPins();
+                        ArrayList<String> urls = new ArrayList<String>();
+                        for (int i = 0; i < pins.size(); i++) {
+                            urls.add("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey());
 //                    ImageView imageView = new ImageView(MainActivity.this);
 //                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //                    testLayout.addView(imageView, layoutParams);
 //                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey()).into(imageView);
-                }
+                        }
 
-                dis_1.setImageList(new ArrayList<String>(urls.subList(0, 1)));
-                dis_2.setImageList(new ArrayList<String>(urls.subList(1, 3)));
-                dis_3.setImageList(new ArrayList<String>(urls.subList(3, 6)));
-                dis_4.setImageList(new ArrayList<String>(urls.subList(6, 10)));
-                dis_5.setImageList(new ArrayList<String>(urls.subList(10, urls.size())));
+                        dis_1.setImageList(new ArrayList<String>(urls.subList(0, 1)));
+                        dis_2.setImageList(new ArrayList<String>(urls.subList(1, 3)));
+                        dis_3.setImageList(new ArrayList<String>(urls.subList(3, 6)));
+                        dis_4.setImageList(new ArrayList<String>(urls.subList(6, 10)));
+                        dis_5.setImageList(new ArrayList<String>(urls.subList(10, urls.size())));
 
-                if (bean.getPins().size() > 0) {
-                    maxPin = bean.getPins().get(bean.getPins().size() - 1).getPinId();
-                }
+                        if (bean.getPins().size() > 0) {
+                            maxPin = bean.getPins().get(bean.getPins().size() - 1).getPinId();
+                        }
 
-                adapter.addAll(urls);
+                        adapter.addAll(urls);
 
-                loadMoreListViewContainer.loadMoreFinish(false, true);
+                        loadMoreListViewContainer.loadMoreFinish(false, true);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> head = new HashMap<String, String>();
+                head.put("X-Requested-With", "XMLHttpRequest");
+                return head;
+            }
+        }.start();
+
+//        Biz.getDemo(MainActivity.this,maxPin, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        }, new Response.Listener<HuaBanBean>() {
+//            @Override
+//            public void onResponse(HuaBanBean response) {
+//                HuaBanBean bean = response;
+//                List<HuaBanBean.PinsEntity> pins = bean.getPins();
+//                ArrayList<String> urls = new ArrayList<String>();
+//                for (int i = 0; i < pins.size(); i++) {
+//                    urls.add("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey());
+////                    ImageView imageView = new ImageView(MainActivity.this);
+////                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+////                    testLayout.addView(imageView, layoutParams);
+////                    Glide.with(MainActivity.this).load("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey()).into(imageView);
+//                }
+//
+//                dis_1.setImageList(new ArrayList<String>(urls.subList(0, 1)));
+//                dis_2.setImageList(new ArrayList<String>(urls.subList(1, 3)));
+//                dis_3.setImageList(new ArrayList<String>(urls.subList(3, 6)));
+//                dis_4.setImageList(new ArrayList<String>(urls.subList(6, 10)));
+//                dis_5.setImageList(new ArrayList<String>(urls.subList(10, urls.size())));
+//
+//                if (bean.getPins().size() > 0) {
+//                    maxPin = bean.getPins().get(bean.getPins().size() - 1).getPinId();
+//                }
+//
+//                adapter.addAll(urls);
+//
+//                loadMoreListViewContainer.loadMoreFinish(false, true);
+//            }
+//        });
     }
 
     private ArrayList<String> getImageList(String s) {

@@ -236,13 +236,23 @@ public class FileUploader {
              */
             int code = conn.getResponseCode();
             if (code == HttpURLConnection.HTTP_OK) { // 若响应码以2开头则读取响应头总的返回信息
-                input = new BufferedInputStream(conn.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(
+                        conn.getInputStream()));
                 StringBuffer sb = new StringBuffer();
-                int length = -1;
-                while ((length = input.read()) != -1) {
-                    sb.append(length);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
                 }
                 result = sb.toString();
+                reader.close();
+
+//                input = new BufferedInputStream(conn.getInputStream());
+//                StringBuffer sb = new StringBuffer();
+//                int length = -1;
+//                while ((length = input.read()) != -1) {
+//                    sb.append(length);
+//                }
+//                result = sb.toString();
             } else {
                 result = "error";
             }
