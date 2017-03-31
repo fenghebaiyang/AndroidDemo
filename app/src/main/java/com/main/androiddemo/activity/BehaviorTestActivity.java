@@ -41,16 +41,6 @@ public class BehaviorTestActivity extends BaseActivity {
     protected void findViews() {
 
 
-        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
-        testLayout = (LinearLayout) findViewById(R.id.test_layout);
-        dis1 = (GridImagesDisplay) findViewById(R.id.dis_1);
-        dis2 = (GridImagesDisplay) findViewById(R.id.dis_2);
-        dis3 = (GridImagesDisplay) findViewById(R.id.dis_3);
-        dis4 = (GridImagesDisplay) findViewById(R.id.dis_4);
-        dis5 = (GridImagesDisplay) findViewById(R.id.dis_5);
-        loadMoreListContainer = (LoadMoreListViewContainer) findViewById(R.id.load_more_list_container);
-        loadMoreSmallImageListView = (ListView) findViewById(R.id.load_more_small_image_list_view);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         tvTitle = (TextView) findViewById(R.id.tv_title);
 
     }
@@ -62,7 +52,7 @@ public class BehaviorTestActivity extends BaseActivity {
 
     @Override
     protected void widgetListener() {
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StepLineManager.getInstance().nextStep(BehaviorTestActivity.this,null);

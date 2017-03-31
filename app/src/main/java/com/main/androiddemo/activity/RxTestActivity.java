@@ -39,7 +39,7 @@ public class RxTestActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onRunSchedulerExampleButtonClicked();
+                //onRunSchedulerExampleButtonClicked();
                 StepLineManager.getInstance().nextStep(RxTestActivity.this,null);
             }
         });
