@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -12,10 +13,13 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.main.androiddemo.activity.BehaviorTestActivity;
+import com.main.androiddemo.activity.RxTestActivity;
 import com.main.androiddemo.adapter.BaseXAdapter;
 import com.main.androiddemo.api.GsonGetRequest;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
+import com.main.androiddemo.utils.StepLineManager;
 import com.main.androiddemo.widget.GridImagesDisplay;
 import com.main.androiddemo.widget.ProportionImageView;
 import com.main.androiddemo.widget.loadmore.LoadMoreContainer;
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         testLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 /*Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
                 Map<String, Object> son = new Gson().fromJson(easyString, mapType);
 
@@ -94,7 +99,17 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mListView.setAdapter(adapter);
-
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                StepLineManager.getInstance().addStep(RxTestActivity.class, 1)
+                        .addStep(BehaviorTestActivity.class, 2)
+                        .addStep(BehaviorTestActivity.class, 3)
+                        .addStep(BehaviorTestActivity.class, 4)
+                        .addStep(MainActivity.class,5);
+                StepLineManager.getInstance().nextStep(MainActivity.this,null);
+            }
+        });
         getData(loadMoreListViewContainer, adapter);
         /*GsonGetRequest<HuaBanBean> stringRe = new GsonGetRequest<HuaBanBean>("http://huaban.com/partner/uc/aimeinv/pins/", HuaBanBean.class, new Response.Listener<HuaBanBean>() {
             @Override
