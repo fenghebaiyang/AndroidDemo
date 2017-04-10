@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.main.androiddemo.widget.refreshlayout.SuperSwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </ScrollView>
+    </com.main.androiddemo.widget.refreshlayout.SuperSwipeRefreshLayout>
+
+    <q.rorbin.qrefreshlayout.QRefreshLayout
+        android:id="@+id/refreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </ScrollView>
+
+
+    </q.rorbin.qrefreshlayout.QRefreshLayout>
+
+    <com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.scu.miomin.shswiperefresh.view.ShareScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </com.scu.miomin.shswiperefresh.view.ShareScrollView>
+
+    </com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout>
+</LinearLayout>
