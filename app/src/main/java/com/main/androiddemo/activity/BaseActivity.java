@@ -31,11 +31,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         init();
     }
 
+    protected abstract void initGetData();
+
     protected abstract int getContentViewId();
 
     protected abstract void findViews();
-
-    protected abstract void initGetData();
 
     protected abstract void widgetListener();
 
