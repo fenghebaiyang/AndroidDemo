@@ -18,7 +18,7 @@ import android.view.animation.Transformation;
  *
  * @author sunjianfei
  */
-public class SwipeRefreshLayout extends SwipeRefresh {
+public class SwipeRefreshXLayout extends SwipeRefresh {
     private CircleImageView mBottomCircleView;
     private MaterialProgressDrawable mBottomProgress;
     private int mCircleViewIndexForBottom = -1;
@@ -82,12 +82,12 @@ public class SwipeRefreshLayout extends SwipeRefresh {
     };
 
 
-    public SwipeRefreshLayout(Context context) {
+    public SwipeRefreshXLayout(Context context) {
         super(context);
         setColorSchemeColors(0xff2f2f2f);
     }
 
-    public SwipeRefreshLayout(Context context, AttributeSet attrs) {
+    public SwipeRefreshXLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         createBottomProgressView();
         final DisplayMetrics metrics = getResources().getDisplayMetrics();

@@ -86,7 +86,7 @@
 
     </com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout>
 
-    <com.main.androiddemo.widget.refreshlayout.SwipeRefreshLayout
+    <com.main.androiddemo.widget.refreshlayout.SwipeRefreshXLayout
         android:id="@+id/swipeRef"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -122,5 +122,5 @@
                     android:text="ddddddddddddddddddddddddddddd1" />
             </LinearLayout>
         </ScrollView>
-    </com.main.androiddemo.widget.refreshlayout.SwipeRefreshLayout>
+    </com.main.androiddemo.widget.refreshlayout.SwipeRefreshXLayout>
 </android.support.percent.PercentRelativeLayout>
