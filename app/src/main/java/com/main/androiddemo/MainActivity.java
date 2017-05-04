@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<String> urls = new ArrayList<String>();
                         for (int i = 0; i < pins.size(); i++) {
                             urls.add("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey());
+                            Logger.d(urls.get(i));
 //                    ImageView imageView = new ImageView(MainActivity.this);
 //                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //                    testLayout.addView(imageView, layoutParams);
