@@ -7,5 +7,11 @@
     <com.main.androiddemo.widget.refreshlayout.ExListView
         android:id="@+id/ex_list_view"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.main.androiddemo.widget.refreshlayout.ExRecyclerView
+        android:id="@+id/ex_recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

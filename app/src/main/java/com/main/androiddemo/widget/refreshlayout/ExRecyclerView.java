@@ -190,4 +190,12 @@ public class ExRecyclerView extends LinearLayout {
     public SwipeRefreshLayout getSwipeRefreshLayout() {
         return swipeRefreshLayout;
     }
+
+    public void setAdapter(ExRecyclerAdapter adapter) {
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void setRefreshLoadListener(ExRefreshLoadListener refreshLoadListener) {
+        this.refreshLoadListener = refreshLoadListener;
+    }
 }

@@ -13,7 +13,7 @@ import com.main.androiddemo.adapter.RecyclerItemClickListener;
  */
 public class ExLoadViewHolder extends BaseXViewHolder {
 
-    public ExLoadViewHolder(RecyclerItemClickListener itemClickListener, View view) {
-        super(itemClickListener, view);
+    public ExLoadViewHolder(View view) {
+        super(null, view);
     }
 }

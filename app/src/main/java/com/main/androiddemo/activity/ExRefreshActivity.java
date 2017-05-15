@@ -1,13 +1,22 @@
 package com.main.androiddemo.activity;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.main.androiddemo.R;
 import com.main.androiddemo.adapter.BaseXAdapter;
+import com.main.androiddemo.adapter.BaseXViewHolder;
 import com.main.androiddemo.widget.ProportionImageView;
 import com.main.androiddemo.widget.refreshlayout.ExListView;
+import com.main.androiddemo.widget.refreshlayout.ExRecyclerAdapter;
+import com.main.androiddemo.widget.refreshlayout.ExRecyclerView;
 import com.main.androiddemo.widget.refreshlayout.ExRefreshLoadListener;
 
 import java.util.Arrays;
@@ -19,8 +28,6 @@ import java.util.Arrays;
  * <br/> Date: 2017/5/4 0004
  */
 public class ExRefreshActivity extends BaseActivity {
-    private ExListView exListView;
-
     String[] urls = new String[]{
             "http://img.hb.aicdn.com/e1fe0d8308a67797a0be276fde912e92d657d30b3552f-lgAhm3",
             "http://img.hb.aicdn.com/b38ccc6b047921809f8d5728dca4bef3f17b833a7a431-zoLH5g",
@@ -43,8 +50,10 @@ public class ExRefreshActivity extends BaseActivity {
             "http://img.hb.aicdn.com/aa80969c4754c15f261811853dcca1faeb5146ce953c8-z7NVqP",
             "http://img.hb.aicdn.com/e42e50cd60c14687160ed77d3571a3afb79a76528b315-1jAdHT",
     };
-
     BaseXAdapter adapter;
+    RecyclerAdapterTest recyclerAdapterTest;
+    private ExListView exListView;
+    private ExRecyclerView exRecyclerView;
 
     @Override
     protected void initGetData() {
@@ -59,6 +68,7 @@ public class ExRefreshActivity extends BaseActivity {
     @Override
     protected void findViews() {
         exListView = (ExListView) findViewById(R.id.ex_list_view);
+        exRecyclerView = (ExRecyclerView) findViewById(R.id.ex_recycler_view);
     }
 
     @Override
@@ -87,6 +97,32 @@ public class ExRefreshActivity extends BaseActivity {
                 }, 3000);
             }
         });
+        exRecyclerView.setRefreshLoadListener(new ExRefreshLoadListener() {
+            @Override
+            public void onRefresh() {
+                exRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerAdapterTest.deleteAll();
+                        recyclerAdapterTest.addAll(Arrays.asList(urls));
+                        recyclerAdapterTest.setHasMore(true);
+                        exRecyclerView.getSwipeRefreshLayout().setRefreshing(false);
+                    }
+                }, 3000);
+            }
+
+            @Override
+            public void onLoad() {
+                exRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerAdapterTest.addAll(Arrays.asList(urls));
+                        recyclerAdapterTest.setHasMore(recyclerAdapterTest.getItemRealCount() < 50);
+                        exRecyclerView.loadMoreFinish(false, recyclerAdapterTest.getItemRealCount() < 50);
+                    }
+                }, 3000);
+            }
+        });
     }
 
     @Override
@@ -106,5 +142,42 @@ public class ExRefreshActivity extends BaseActivity {
         };
         //adapter.addAll(Arrays.asList(urls));
         exListView.getListView().setAdapter(adapter);
+
+        recyclerAdapterTest = new RecyclerAdapterTest(mContext);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        exRecyclerView.getRecyclerView().setLayoutManager(layoutManager);
+        exRecyclerView.getRecyclerView().addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                super.onDraw(c, parent, state);
+            }
+
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+            }
+        });
+        exRecyclerView.setAdapter(recyclerAdapterTest);
+        exRecyclerView.setShowLoadingForFirstPage(true);
+    }
+
+    class RecyclerAdapterTest extends ExRecyclerAdapter<String> {
+
+        public RecyclerAdapterTest(Context mContext) {
+            super(mContext);
+        }
+
+        @Override
+        public int getConvertViewRes(int viewType) {
+            return R.layout.item_grid_images_display;
+        }
+
+        @Override
+        public void getItemView(BaseXViewHolder holder, int position) {
+            ProportionImageView imageView = holder.getView(R.id.img);
+            imageView.setBackgroundColor(Color.rgb(20 + position, 20 + position, 20 + position));
+            Glide.with(mContext).load(list.get(position)).into(imageView);
+
+        }
     }
 }

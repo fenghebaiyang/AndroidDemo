@@ -45,7 +45,7 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
     public BaseXViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_LOAD_MORE) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.load_more_default_footer, parent, false);
-            return new ExLoadViewHolder(itemClickListener, itemView);
+            return new ExLoadViewHolder(itemView);
         }
         View itemView = LayoutInflater.from(parent.getContext()).inflate(getConvertViewRes(viewType), parent, false);
         return new BaseXViewHolder(itemClickListener, itemView);
@@ -240,4 +240,14 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
         this.itemClickListener = itemClickListener;
     }
 
+    public void setHasMore(boolean mHasMore) {
+        if(this.mHasMore^mHasMore) {
+            this.mHasMore = mHasMore;
+            if(mHasMore) {
+                notifyItemInserted(getItemCount());
+            } else {
+                notifyItemRemoved(getItemCount());
+            }
+        }
+    }
 }
