@@ -3,7 +3,6 @@ package com.main.androiddemo.widget.refreshlayout;
 import android.view.View;
 
 import com.main.androiddemo.adapter.BaseXViewHolder;
-import com.main.androiddemo.adapter.RecyclerItemClickListener;
 
 /**
  * <br/> Description:
