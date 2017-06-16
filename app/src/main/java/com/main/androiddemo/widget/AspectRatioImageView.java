@@ -16,36 +16,36 @@ import com.main.androiddemo.R;
  * <br/> Date: 2016/3/23
  * <br/> @Copyright: Copyright (c) 2016 Shenzhen Duidian Technology Co., Ltd. All rights reserved.
  */
-public class ProportionImageView extends ImageView {
+public class AspectRatioImageView extends ImageView {
 
     /**
      * 图片的宽高比
      */
     private float proportion = 0f;
 
-    public ProportionImageView(Context context) {
+    public AspectRatioImageView(Context context) {
         super(context);
     }
 
-    public ProportionImageView(Context context, AttributeSet attrs) {
+    public AspectRatioImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public ProportionImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AspectRatioImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ProportionImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AspectRatioImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
 
     private void init(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ProportionImageView);
-        proportion = a.getFloat(R.styleable.ProportionImageView_proportion, 0f);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AspectRatioImageView);
+        proportion = a.getFloat(R.styleable.AspectRatioImageView_proportion, 0f);
         a.recycle();
     }
 

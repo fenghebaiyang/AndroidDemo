@@ -48,7 +48,7 @@ public class GridImagesDisplay extends AutoSizeGridView {
 
             @Override
             public View getItemView(int position, View convertView, ViewGroup parent, ViewHolder viewHolder) {
-                ProportionImageView img = viewHolder.getView(R.id.img);
+                AspectRatioImageView img = viewHolder.getView(R.id.img);
                 if (list.size() == 1) {
                     img.setProportion(4 / 3);
                 } else {

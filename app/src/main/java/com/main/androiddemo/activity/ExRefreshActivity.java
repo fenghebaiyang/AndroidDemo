@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.main.androiddemo.R;
 import com.main.androiddemo.adapter.BaseXAdapter;
 import com.main.androiddemo.adapter.BaseXViewHolder;
-import com.main.androiddemo.widget.ProportionImageView;
+import com.main.androiddemo.widget.AspectRatioImageView;
 import com.main.androiddemo.widget.refreshlayout.ExListView;
 import com.main.androiddemo.widget.refreshlayout.ExRecyclerAdapter;
 import com.main.androiddemo.widget.refreshlayout.ExRecyclerView;
@@ -135,7 +135,7 @@ public class ExRefreshActivity extends BaseActivity {
 
             @Override
             public View getItemView(int position, View convertView, ViewGroup parent, ViewHolder viewHolder) {
-                ProportionImageView imageView = viewHolder.getView(R.id.img);
+                AspectRatioImageView imageView = viewHolder.getView(R.id.img);
                 Glide.with(mContext).load(list.get(position)).into(imageView);
                 return convertView;
             }
@@ -174,7 +174,7 @@ public class ExRefreshActivity extends BaseActivity {
 
         @Override
         public void getItemView(BaseXViewHolder holder, int position) {
-            ProportionImageView imageView = holder.getView(R.id.img);
+            AspectRatioImageView imageView = holder.getView(R.id.img);
             imageView.setBackgroundColor(Color.rgb(20 + position, 20 + position, 20 + position));
             Glide.with(mContext).load(list.get(position)).into(imageView);
 

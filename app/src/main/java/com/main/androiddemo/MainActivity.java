@@ -21,7 +21,7 @@ import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
 import com.main.androiddemo.utils.StepLineManager;
 import com.main.androiddemo.widget.GridImagesDisplay;
-import com.main.androiddemo.widget.ProportionImageView;
+import com.main.androiddemo.widget.AspectRatioImageView;
 import com.main.androiddemo.widget.loadmore.LoadMoreContainer;
 import com.main.androiddemo.widget.loadmore.LoadMoreHandler;
 import com.main.androiddemo.widget.loadmore.LoadMoreListViewContainer;
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public View getItemView(int position, View convertView, ViewGroup parent, ViewHolder viewHolder) {
-                ProportionImageView imageView = viewHolder.getView(R.id.img);
+                AspectRatioImageView imageView = viewHolder.getView(R.id.img);
                 Glide.with(MainActivity.this).load(list.get(position)).into(imageView);
                 return convertView;
             }
