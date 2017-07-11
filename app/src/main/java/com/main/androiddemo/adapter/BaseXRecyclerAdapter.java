@@ -28,7 +28,7 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
         list = new ArrayList<T>();
     }
 
-    public BaseXRecyclerAdapter(Context mContext, ArrayList<T> list) {
+    public BaseXRecyclerAdapter(Context mContext, List<T> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -74,6 +74,7 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
         } else {
             list.addAll(temp);
         }
+        //notifyItemRangeInserted(positionStart, temp.size());
         notifyItemRangeChanged(positionStart, temp.size());
     }
 
@@ -115,7 +116,7 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
             list = new ArrayList<T>();
         }
         list.add(position, temp);
-        notifyItemChanged(position);
+        notifyItemInserted(position);
     }
 
     /**
@@ -129,10 +130,14 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
      * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
      */
     public void deleteAll() {
+        int previousSize = getItemCount();
         if (list != null) {
             list.clear();
         }
-        notifyDataSetChanged();
+        if (previousSize > 0) {
+            notifyItemRangeRemoved(0, previousSize);
+        }
+        //notifyDataSetChanged();
     }
 
     /**
@@ -150,10 +155,9 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
         if (position < 0 || position >= getItemCount()) {
             return;
         }
-
         if (list != null) {
             list.remove(position);
-            notifyItemRangeChanged(position, getItemCount() - position);
+            notifyItemRemoved(position);
         }
     }
 
