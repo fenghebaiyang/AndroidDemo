@@ -107,6 +107,7 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
         } else {
             list.addAll(temp);
         }
+        //notifyItemRangeInserted(positionStart, temp.size());
         notifyItemRangeChanged(positionStart, temp.size());
     }
 
@@ -148,7 +149,7 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
             list = new ArrayList<T>();
         }
         list.add(position, temp);
-        notifyItemChanged(position);
+        notifyItemInserted(position);
     }
 
     /**
@@ -162,10 +163,14 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
      * <br/> @updateInfo (此处输入修改内容,若无修改可不写.)
      */
     public void deleteAll() {
+        int previousSize = getItemCount();
         if (list != null) {
             list.clear();
         }
-        notifyDataSetChanged();
+        if (previousSize > 0) {
+            notifyItemRangeRemoved(0, previousSize);
+        }
+        //notifyDataSetChanged();
     }
 
     /**
@@ -183,10 +188,9 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
         if (position < 0 || position >= getItemCount()) {
             return;
         }
-
         if (list != null) {
             list.remove(position);
-            notifyItemRangeChanged(position, getItemCount() - position);
+            notifyItemRemoved(position);
         }
     }
 

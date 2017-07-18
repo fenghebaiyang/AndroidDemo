@@ -1,11 +1,14 @@
 package com.main.androiddemo.widget.refreshlayout;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -58,12 +61,20 @@ public class ExRecyclerView extends LinearLayout {
                 }
             }
         });
-//        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-//            @Override
-//            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
-//                return !mIsLoading;
-//            }
-//        });
+        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+            @Override
+            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
+                if (mIsLoading) {
+                    return false;
+                } else {
+                    if (android.os.Build.VERSION.SDK_INT < 14) {
+                        return ViewCompat.canScrollVertically(child, -1) || child.getScrollY() > 0;
+                    } else {
+                        return ViewCompat.canScrollVertically(child, -1);
+                    }
+                }
+            }
+        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             //用来标记是否正在向最后一个滑动，既是否向右滑动或向下滑动
