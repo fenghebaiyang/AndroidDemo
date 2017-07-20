@@ -1,5 +1,7 @@
 package com.main.androiddemo;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,8 +22,8 @@ import com.main.androiddemo.api.GsonGetRequest;
 import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
 import com.main.androiddemo.utils.StepLineManager;
-import com.main.androiddemo.widget.GridImagesDisplay;
 import com.main.androiddemo.widget.AspectRatioImageView;
+import com.main.androiddemo.widget.GridImagesDisplay;
 import com.main.androiddemo.widget.loadmore.LoadMoreContainer;
 import com.main.androiddemo.widget.loadmore.LoadMoreHandler;
 import com.main.androiddemo.widget.loadmore.LoadMoreListViewContainer;
@@ -63,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
         testLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    Intent intent = new Intent();
+                    intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
+                    intent.putExtra("LauncherUI.From.Scaner.Shortcut", true);
+                    intent.setFlags(335544320);
+                    intent.setAction("android.intent.action.VIEW");
+                    startActivity(intent);
+                } catch (Exception e) {
+                }
 
                 /*Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
                 Map<String, Object> son = new Gson().fromJson(easyString, mapType);
