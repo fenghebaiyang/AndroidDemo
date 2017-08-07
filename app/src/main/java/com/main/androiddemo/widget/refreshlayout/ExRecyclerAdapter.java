@@ -31,6 +31,13 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
 
     private boolean mHasMore = false;
 
+    private boolean mNextLoadEnable = false;
+    private boolean mLoadMoreEnable = false;
+    private boolean mLoading = false;
+//    private LoadMoreView mLoadMoreView = new SimpleLoadMoreView();
+//    private RequestLoadMoreListener mRequestLoadMoreListener;
+    private boolean mEnableLoadMoreEndClick = false;
+
     public ExRecyclerAdapter(Context mContext) {
         this.mContext = mContext;
         list = new ArrayList<T>();
@@ -245,13 +252,15 @@ public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXVie
     }
 
     public void setHasMore(boolean mHasMore) {
-        if(this.mHasMore^mHasMore) {
+        if (this.mHasMore ^ mHasMore) {
             this.mHasMore = mHasMore;
-            if(mHasMore) {
+            if (mHasMore) {
                 notifyItemInserted(getItemCount());
             } else {
                 notifyItemRemoved(getItemCount());
             }
         }
     }
+
+
 }
