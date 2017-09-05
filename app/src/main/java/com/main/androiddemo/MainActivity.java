@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(HuaBanBean response) {
                         HuaBanBean bean = response;
-                        List<HuaBanBean.PinsEntity> pins = bean.getPins();
+                        List<HuaBanBean.PinsBean> pins = bean.getPins();
                         ArrayList<String> urls = new ArrayList<String>();
                         for (int i = 0; i < pins.size(); i++) {
                             urls.add("http://img.hb.aicdn.com/" + pins.get(i).getFile().getKey());
