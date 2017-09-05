@@ -16,7 +16,7 @@ import retrofit2.http.Query;
 
 public interface ServiceInterface {
     @Headers("X-Requested-With:XMLHttpRequest")
-    @GET("/")
+    @GET("partner/uc/aimeinv/pins/")
     Call<HuaBanBean> getHuaBanList(@Query(value="max", encoded=true) long pin);
 
 
@@ -24,6 +24,6 @@ public interface ServiceInterface {
     Call<ResponseBody> getBaiduUrl();
 
     @Headers("X-Requested-With:XMLHttpRequest")
-    @GET("/")
+    @GET("partner/uc/aimeinv/pins/")
     Call<ResponseBody> getHuaBanListssss(@Query(value="max", encoded=true) long pin);
 }

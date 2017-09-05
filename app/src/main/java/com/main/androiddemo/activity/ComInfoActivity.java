@@ -6,6 +6,7 @@ import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ThreadPoolUtils;
 import com.main.androiddemo.R;
 import com.main.androiddemo.utils.Logger;
@@ -76,6 +77,8 @@ public class ComInfoActivity extends BaseActivity {
         disposables = new CompositeDisposable();
         threadPool = new ThreadPoolUtils(CachedThread, 5);
         requestData();
+
+        onTest();
     }
 
     String jinriyunshi = "http://m.meiguoshenpo.com/meiri/";
@@ -137,4 +140,24 @@ public class ComInfoActivity extends BaseActivity {
         }));
     }
 
+    private void onTest() {
+        disposables.add(Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onNext(3);
+            }
+        }).subscribeOn(Schedulers.io()).doOnNext(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogUtils.d("Consumer1:"+integer);
+            }
+        }).doOnNext(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogUtils.d("Consumer2:"+integer);
+            }
+        }).subscribe());
+    }
 }

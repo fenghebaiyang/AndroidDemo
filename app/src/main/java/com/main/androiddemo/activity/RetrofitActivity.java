@@ -4,16 +4,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.main.androiddemo.R;
 import com.main.androiddemo.api.ServiceInterface;
+import com.main.androiddemo.bean.HuaBanBean;
 import com.main.androiddemo.utils.Logger;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,6 +61,13 @@ public class RetrofitActivity extends BaseActivity {
     }
 
     private void getData(int pin) {
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
         Gson gson = new GsonBuilder()
                 //配置你的Gson
                 .setDateFormat("yyyy-MM-dd hh:mm:ss")
@@ -69,40 +75,42 @@ public class RetrofitActivity extends BaseActivity {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://huaban.com/partner/uc/aimeinv/pins/")
+                .baseUrl("http://huaban.com/")
+                .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        ServiceInterface sInter = retrofit.create(ServiceInterface.class);
-//        Call<HuaBanBean> call = sInter.getHuaBanList(pin);
-//        call.enqueue(new Callback<HuaBanBean>() {
-//            @Override
-//            public void onResponse(Call<HuaBanBean> call, Response<HuaBanBean> response) {
-//                Logger.dd(response.message(), response.body());
-//                HuaBanBean temp = response.body();
-//                Logger.dd("HuaBanBean", temp);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<HuaBanBean> call, Throwable t) {
-//                Logger.dd("Throwable", t);
-//            }
-//        });
 
-        Call<ResponseBody> responseCall = sInter.getHuaBanListssss(pin);
-        responseCall.enqueue(new Callback<ResponseBody>() {
+        ServiceInterface sInter = retrofit.create(ServiceInterface.class);
+        Call<HuaBanBean> call = sInter.getHuaBanList(pin);
+        call.enqueue(new Callback<HuaBanBean>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    LogUtils.json(response.message(), response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(Call<HuaBanBean> call, Response<HuaBanBean> response) {
+                Logger.dd(response.message(), response.body());
+                HuaBanBean temp = response.body();
+                Logger.dd("HuaBanBean", temp);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<HuaBanBean> call, Throwable t) {
                 Logger.dd("Throwable", t);
             }
         });
+
+//        Call<ResponseBody> responseCall = sInter.getHuaBanListssss(pin);
+//        responseCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    LogUtils.json(response.message(), response.body().string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Logger.dd("Throwable", t);
+//            }
+//        });
     }
 }
