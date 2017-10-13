@@ -34,4 +34,14 @@
         <attr name="isAutoPlay" format="boolean"/>
         <attr name="defaultImage" format="integer|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="TabMenu">
+        <attr name="tabTextColor" format="color" />
+        <attr name="tabSelectedTextColor" format="color" />
+        <attr name="tabIconRes" format="integer|reference" />
+        <attr name="tabSelectedIconRes" format="integer|reference" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="tabSelectedTextSize" format="dimension" />
+        <attr name="tabText" format="string" />
+    </declare-styleable>
 </resources>
