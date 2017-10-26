@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.main.androiddemo"
@@ -25,7 +25,7 @@ android {
 
         tasks.all {
 
-            if (variant.buildType.name.contains('release')) {
+            if ("assemble${variant.name.capitalize()}".equalsIgnoreCase(it.name) && variant.buildType.name.contains('release')) {
                 it.doLast {
 
                     copy {
@@ -33,7 +33,7 @@ android {
                         def newFileNamePrefix = "${project.name}-${defaultConfig.versionName}-${defaultConfig.versionCode}-${date}"
 
                         def destPath = file("${bakPath}/${project.name}-${date}")
-                        from variant.outputs.outputFile
+                        from variant.outputs.getOutputFile()
                         into destPath
                         rename { String fileName ->
                             fileName.replace("${fileNamePrefix}.apk", "${newFileNamePrefix}.apk")
