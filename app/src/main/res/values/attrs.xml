@@ -2,7 +2,7 @@
 <resources>
     <!--自定义图片比例的ImageView-->
     <declare-styleable name="AspectRatioImageView">
-        <attr name="proportion" format="float"/>
+        <attr name="ratio" format="string"/>
     </declare-styleable>
     <declare-styleable name="BannerLayout">
         <attr name="selectedIndicatorColor" format="color|reference" />

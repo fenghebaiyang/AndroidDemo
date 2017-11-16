@@ -1,13 +1,10 @@
 package com.main.androiddemo.activity;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ThreadPoolUtils;
 import com.main.androiddemo.R;
 import com.main.androiddemo.utils.Logger;
 
@@ -21,15 +18,10 @@ import java.io.IOException;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.blankj.utilcode.util.ThreadPoolUtils.CachedThread;
 
 /**
  * <br/> Description:
@@ -40,10 +32,7 @@ import static com.blankj.utilcode.util.ThreadPoolUtils.CachedThread;
 public class ComInfoActivity extends BaseActivity {
 
     private SwipeRefreshLayout swipeRef;
-    private RecyclerView recyclerView;
     private LinearLayout linear;
-    private ThreadPoolUtils threadPool;
-
     private CompositeDisposable disposables;
 
     @Override
@@ -75,13 +64,10 @@ public class ComInfoActivity extends BaseActivity {
     @Override
     protected void init() {
         disposables = new CompositeDisposable();
-        threadPool = new ThreadPoolUtils(CachedThread, 5);
         requestData();
-
-        onTest();
     }
 
-    String jinriyunshi = "http://m.meiguoshenpo.com/meiri/";
+    String jinriyunshi = "http://m.meiguoshenpo.com/yunshi/baiyang/";
 
     private void requestData() {
         disposables.add(Observable.create(new ObservableOnSubscribe<Document>() {
@@ -102,62 +88,22 @@ public class ComInfoActivity extends BaseActivity {
             public void accept(Document document) throws Exception {
                 Logger.d("doc", document.outerHtml());
             }
-        }).flatMap(new Function<Document, ObservableSource<Document>>() {
-            @Override
-            public ObservableSource<Document> apply(Document document) throws Exception {
-                Elements links = document.getElementsByClass("list_box");
-                final String url = links.get(0).getElementsByTag("dd").get(0).getElementsByTag("h3").get(0).getElementsByTag("a").get(0).attr("href");
-                for (Element element : links) {
-                    Logger.d("element", element.text() + element.attr("href"));
-                }
-                return new ObservableSource<Document>() {
-                    @Override
-                    public void subscribe(Observer<? super Document> observer) {
-                        try {
-                            Document doc = Jsoup.connect(url).execute().parse();
-                            if (doc != null) {
-                                observer.onNext(doc);
-                                observer.onComplete();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            observer.onError(e);
-                        }
-                    }
-                };
-            }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Document>() {
             @Override
             public void accept(Document document) throws Exception {
                 swipeRef.setRefreshing(false);
-                Elements context = document.getElementsByClass("show_cnt");
-                Logger.d("context", context.text());
-                linear.removeAllViews();
+                Element title = document.getElementById("YUNSHI_TITLE");
+                TextView txtTitle = new TextView(mContext);
+                txtTitle.setText(Html.fromHtml(title.outerHtml()));
+
+                Elements context = document.getElementsByClass("yuncheng_cnt");
                 TextView txt = new TextView(mContext);
                 txt.setText(Html.fromHtml(context.outerHtml()));
+
+                linear.removeAllViews();
+                linear.addView(txtTitle);
                 linear.addView(txt);
             }
         }));
-    }
-
-    private void onTest() {
-        disposables.add(Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
-                e.onNext(1);
-                e.onNext(2);
-                e.onNext(3);
-            }
-        }).subscribeOn(Schedulers.io()).doOnNext(new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) throws Exception {
-                LogUtils.d("Consumer1:"+integer);
-            }
-        }).doOnNext(new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) throws Exception {
-                LogUtils.d("Consumer2:"+integer);
-            }
-        }).subscribe());
     }
 }
