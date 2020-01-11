@@ -1,4 +1,4 @@
-package com.main.androiddemo.adapter;
+package com.main.androiddemo.widget.refreshlayout;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,16 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.main.androiddemo.R;
+import com.main.androiddemo.adapter.BaseXViewHolder;
+import com.main.androiddemo.adapter.RecyclerItemClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <br/> Description:recyclerView的基类适配器
+ * <br/> Description:
  * <br/> Author: xiaojianfeng
  * <br/> Version: 1.0
- * <br/> Date: 2016/8/25 0025
+ * <br/> Date: 2017/5/4 0004
  */
-public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXViewHolder> {
+public abstract class ExRecyclerAdapter<T> extends RecyclerView.Adapter<BaseXViewHolder> {
 
     protected Context mContext;
     /**
@@ -23,30 +27,66 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
      */
     protected List<T> list;
 
-    public BaseXRecyclerAdapter(Context mContext) {
+    public static int TYPE_LOAD_MORE = 0x0001;
+
+    private boolean mHasMore = false;
+
+    private boolean mNextLoadEnable = false;
+    private boolean mLoadMoreEnable = false;
+    private boolean mLoading = false;
+//    private LoadMoreView mLoadMoreView = new SimpleLoadMoreView();
+//    private RequestLoadMoreListener mRequestLoadMoreListener;
+    private boolean mEnableLoadMoreEndClick = false;
+
+    public ExRecyclerAdapter(Context mContext) {
         this.mContext = mContext;
         list = new ArrayList<T>();
     }
 
-    public BaseXRecyclerAdapter(Context mContext, List<T> list) {
+    public ExRecyclerAdapter(Context mContext, ArrayList<T> list) {
         this.mContext = mContext;
         this.list = list;
     }
 
     @Override
     public BaseXViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_LOAD_MORE) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.load_more_default_footer, parent, false);
+            return new ExLoadViewHolder(itemView);
+        }
         View itemView = LayoutInflater.from(parent.getContext()).inflate(getConvertViewRes(viewType), parent, false);
         return new BaseXViewHolder(itemClickListener, itemView);
     }
 
     @Override
     public void onBindViewHolder(BaseXViewHolder holder, int position) {
-        getItemView(holder, position);
+        if (getItemViewType(position) == TYPE_LOAD_MORE) {
+
+        } else {
+            getItemView(holder, position);
+        }
     }
 
     @Override
-    public int getItemCount() {
+    public final int getItemCount() {
+        return mHasMore ? getItemRealCount() + 1 : getItemRealCount();
+    }
+
+    public int getItemRealCount() {
         return list == null ? 0 : list.size();
+    }
+
+    @Override
+    public final int getItemViewType(int position) {
+        if (list != null && position < list.size()) {
+            return getItemViewTypes(position);
+        } else {
+            return TYPE_LOAD_MORE;
+        }
+    }
+
+    public int getItemViewTypes(int position) {
+        return super.getItemViewType(position);
     }
 
     public abstract int getConvertViewRes(int viewType);
@@ -210,4 +250,17 @@ public abstract class BaseXRecyclerAdapter<T> extends RecyclerView.Adapter<BaseX
     public void setItemClickListener(RecyclerItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
+
+    public void setHasMore(boolean mHasMore) {
+        if (this.mHasMore ^ mHasMore) {
+            this.mHasMore = mHasMore;
+            if (mHasMore) {
+                notifyItemInserted(getItemCount());
+            } else {
+                notifyItemRemoved(getItemCount());
+            }
+        }
+    }
+
+
 }

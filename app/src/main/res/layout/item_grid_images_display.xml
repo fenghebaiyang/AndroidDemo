@@ -5,11 +5,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.main.androiddemo.widget.ProportionImageView
+    <com.main.androiddemo.widget.AspectRatioImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        app:proportion="1" />
+        app:ratio="1" />
 
 </LinearLayout>

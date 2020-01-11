@@ -1,10 +1,8 @@
-import java.text.SimpleDateFormat
-
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.main.androiddemo"
@@ -15,37 +13,112 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-    applicationVariants.all {
-        variant ->
-            variant.outputs.each {
-                output ->
-                    def outputFile = output.outputFile
-                    if (variant.name == android.buildTypes.release.name && outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def fileName = outputFile.name.replace(".apk", "-${defaultConfig.versionName}" + "-${defaultConfig.versionCode}" + "-${new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date(System.currentTimeMillis())).toString()}.apk")
-                        output.outputFile = new File(outputFile.parent, fileName)
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    applicationVariants.all { variant ->
+
+        def bakPath = file("${rootDir}/bakApk/")
+        def date = new Date().format("yyyyMMddHHmmSS")
+
+        tasks.all {
+
+            if ("assemble${variant.name.capitalize()}".equalsIgnoreCase(it.name) && variant.buildType.name.contains('release')) {
+                it.doLast {
+
+                    copy {
+                        def fileNamePrefix = "${project.name}-${variant.baseName}"
+                        def newFileNamePrefix = "${project.name}-${defaultConfig.versionName}-${defaultConfig.versionCode}-${date}"
+
+                        def destPath = file("${bakPath}/${project.name}-${date}")
+                        from variant.outputs.first().outputFile
+                        into destPath
+                        rename { String fileName ->
+                            fileName.replace("${fileNamePrefix}.apk", "${newFileNamePrefix}.apk")
+                        }
+
+                        from "${buildDir}/outputs/mapping/${variant.dirName}/mapping.txt"
+                        into destPath
+                        rename { String fileName ->
+                            fileName.replace("mapping.txt", "${newFileNamePrefix}-mapping.txt")
+                        }
+
+                        from "${buildDir}/intermediates/symbols/${variant.dirName}/R.txt"
+                        into destPath
+                        rename { String fileName ->
+                            fileName.replace("R.txt", "${newFileNamePrefix}-R.txt")
+                        }
                     }
+                }
             }
+        }
+
+//        variant.outputs.each {
+//            output ->
+//                def outputFile = output.outputFile
+//                if (variant.name == android.buildTypes.release.name && outputFile != null && outputFile.name.endsWith('.apk')) {
+//                    def fileName = outputFile.name.replace(".apk", "-${defaultConfig.versionName}"
+//                            + "-${defaultConfig.versionCode}"
+//                            + "-${new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date(System.currentTimeMillis())).toString()}.apk")
+//                    output.outputFile = new File(outputFile.parent, fileName)
+//                }
+//        }
+//        variant.assemble.doLast {
+//            //If this is a 'release' build, reveal the compiled apk in finder/explorer
+//            if (variant.buildType.name.contains('release')) {
+//
+//                def path = null;
+//                variant.outputs.each { output ->
+//                    path = output.outputFile
+//                }
+//
+//                exec {
+//                    if (System.properties['os.name'].toLowerCase().contains('mac os x')) {
+//                        ['open', '-R', path].execute()
+//                    } else if (System.properties['os.name'].toLowerCase().contains('windows')) {
+//                        ['explorer', '/select,', path].execute()
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:percent:25.3.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'cn.finalteam:toolsfinal:1.1.4'
-    compile 'com.zhy:okhttputils:2.4.1'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.android.support:appcompat-v7:25.+'
+    compile 'com.android.support:design:25.+'
+    compile 'com.android.support:percent:25.+'
+    compile 'com.android.support:recyclerview-v7:25.+'
+    compile 'com.android.volley:volley:1.0.0'
     compile 'com.blankj:utilcode:1.3.7'
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.miomin:shswiperefreshlayout:1.3.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    compile 'com.zhy:okhttputils:2.4.1'
+    compile 'cn.finalteam:toolsfinal:1.1.4'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.3'
+    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'q.rorbin:QRefreshLayout:1.2.4'
+    compile 'com.android.support:palette-v7:25.+'
+    compile 'com.android.support:cardview-v7:25.+'
+
+    compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.2'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.2'
 }

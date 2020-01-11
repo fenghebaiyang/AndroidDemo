@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--自定义图片比例的ImageView-->
-    <declare-styleable name="ProportionImageView">
-        <attr name="proportion" format="float"/>
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="ratio" format="string"/>
     </declare-styleable>
     <declare-styleable name="BannerLayout">
         <attr name="selectedIndicatorColor" format="color|reference" />
@@ -33,5 +33,15 @@
         <attr name="scrollDuration" format="integer|reference" />
         <attr name="isAutoPlay" format="boolean"/>
         <attr name="defaultImage" format="integer|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="TabMenu">
+        <attr name="tabTextColor" format="color" />
+        <attr name="tabSelectedTextColor" format="color" />
+        <attr name="tabIconRes" format="integer|reference" />
+        <attr name="tabSelectedIconRes" format="integer|reference" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="tabSelectedTextSize" format="dimension" />
+        <attr name="tabText" format="string" />
     </declare-styleable>
 </resources>

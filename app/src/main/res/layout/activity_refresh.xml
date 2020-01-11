@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.main.androiddemo.widget.refreshlayout.SuperSwipeRefreshLayout
+        android:id="@+id/supers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_heightPercent="50%"
+        app:layout_widthPercent="50%">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_"
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </ScrollView>
+    </com.main.androiddemo.widget.refreshlayout.SuperSwipeRefreshLayout>
+
+    <q.rorbin.qrefreshlayout.QRefreshLayout
+        android:id="@+id/refreshlayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@+id/supers"
+        app:layout_heightPercent="50%"
+        app:layout_widthPercent="50%">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </ScrollView>
+
+
+    </q.rorbin.qrefreshlayout.QRefreshLayout>
+
+    <com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/supers"
+        android:layout_toRightOf="@+id/supers"
+        app:layout_heightPercent="50%"
+        app:layout_widthPercent="50%">
+
+        <com.scu.miomin.shswiperefresh.view.ShareScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </com.scu.miomin.shswiperefresh.view.ShareScrollView>
+
+    </com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout>
+
+    <com.main.androiddemo.widget.refreshlayout.SwipeRefreshXLayout
+        android:id="@+id/swipeRef"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/supers"
+        app:layout_heightPercent="50%"
+        app:layout_widthPercent="50%">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:gravity="center"
+                    android:text="ddddddddddddddddddddddddddddd1" />
+            </LinearLayout>
+        </ScrollView>
+    </com.main.androiddemo.widget.refreshlayout.SwipeRefreshXLayout>
+</android.support.percent.PercentRelativeLayout>

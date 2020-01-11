@@ -48,11 +48,11 @@ public class GridImagesDisplay extends AutoSizeGridView {
 
             @Override
             public View getItemView(int position, View convertView, ViewGroup parent, ViewHolder viewHolder) {
-                ProportionImageView img = viewHolder.getView(R.id.img);
+                AspectRatioImageView img = viewHolder.getView(R.id.img);
                 if (list.size() == 1) {
-                    img.setProportion(4 / 3);
+                    img.setRatio(4 / 3);
                 } else {
-                    img.setProportion(1);
+                    img.setRatio(1);
                 }
                 Glide.with(mContext).load(list.get(position)).into(img);
                 return convertView;
